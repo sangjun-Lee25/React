@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 당첨자 추첨</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column; /* 세로로 나열 */
+            gap: 20px;
+            width: 400px;
+            padding: 30px;
+            background: rgb(255, 255, 255);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 30px;
+        }
+
+        .section:last-child { border-bottom: none; }
+
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0bdf43;
+            color: rgb(200, 203, 17);
+            font-weight: bold;
+        }
+
+        button:hover { background-color: #f234e2; }
+
+        #myButton { background-color: #7a3aae; }
+        #myButton:hover { background-color: #5889ce; }
+
+        .log-box {
+            background: #333;
+            color: #00ff00;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            border-radius: 5px;
+            margin-top: 10px;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 1.이벤트 당첨자 추첨 버튼 -->
+        <div class="section">
+            <label>1. 이벤트 당첨자 발표!</label>
+            <button id="myButton">클릭하여 확인해보세요!</button>
+        </div>
+
+        <!-- 2. Input 이벤트용 입력창 -->
+        <div class="section">
+            <label>2. 실시간 입력 감지중입니다.</label>
+            <input type="text" id="myInput" placeholder="여기에 타이핑 해보세요">
+            <div id="inputLog" class="log-box">콘솔을 확인하거나 여기에 출력됨</div>
+        </div>
+
+        <!-- 3. Form 제출용 섹션 -->
+        <div class="section">
+            <label>3. 폼 제출 (FormData)</label>
+            <form id="myForm">
+                <input type="text" name="userName" placeholder="이름" required>
+                <input type="email" name="userEmail" placeholder="이메일" required>
+                <button type="submit">데이터 제출</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- 제공해주신 자바스크립트 코드 ---
+
+        // 1. 클릭 이벤트
+        const button = document.querySelector('#myButton');
+        button.addEventListener('click', (event) => {
+          console.log('Clicked!');
+          alert('당첨자는 [당첨자 이름]입니다!'); // 확인을 위한 알림창
+          event.preventDefault(); 
+        });
+
+        // 2. Input 이벤트
+        const input = document.querySelector('#myInput');
+        const inputLog = document.querySelector('#inputLog'); // 시각적 확인용
+
+        input.addEventListener('input', (e) => {
+          console.log('Current value:', e.target.value);
+          inputLog.textContent = `입력값: ${e.target.value}`; // 화면에 표시
+        });
+
+        // 3. Form 제출
+        const form = document.querySelector('#myForm');
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData);
+          
+          console.log('제출된 데이터:', data);
+          alert('전송된 데이터: ' + JSON.stringify(data));
+        });
+    </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
